@@ -4,8 +4,8 @@
 
 	$(window).on('load', function () {
 		$('[data-loader="circle-side"]').fadeOut(); // will first fade out the loading animation
-		$('#preloader').delay(350).fadeOut('slow'); // will fade out the white DIV that covers the website.
-		$('body').delay(350);
+		$('#preloader').delay(150).fadeOut('slow'); // will fade out the white DIV that covers the website.
+		$('body').delay(150);
 		$(window).scroll();
 	});
 	
@@ -43,12 +43,17 @@
 	}
 	
     /* Form submit loader */
-    $('form').on('submit',function() {
+    $('form').on('submit',function(e) {
+
         var form = $("form#wrapped");
         form.validate();
         if (form.valid()) {
             $("#loader_form").fadeIn();
-        }
+				}
+				let vals = $('form#wrapped').val()
+				console.log(vals)
+				console.log($('form#wrapped'))
+				e.preventDefault()
     });
 	
 	/*  Image popups */
@@ -93,5 +98,9 @@
 			}
 		}
 	});
+
+	$('.dropdown')
+  	.dropdown()
+	;
 
 })(window.jQuery);
