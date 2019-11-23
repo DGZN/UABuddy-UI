@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Segment, Grid, Column, Dropdown, Form, Checkbox, Button } from 'semantic-ui-react';
+import {Transition, Container, Segment, Grid, Column, Dropdown, Form, Checkbox, Button, Icon } from 'semantic-ui-react';
 
 
 
@@ -197,11 +197,15 @@ const countyOptions = [{
     text: "Yuma County"
 }];
 
+const animations = ["browse", "browse right", "drop", "fade", "fade up", "fade down", "fade left", "fade right", "fly up", "fly down", "fly left", "fly right", "horizontal flip", "vertical flip", "scale", "slide up", "slide down", "slide left", "slide right", "swing up", "swing down", "swing left", "swing right", "zoom", "jiggle", "flash", "shake", "pulse", "tada", "bounce", "glow"]
+
 class RegistraionBox extends React.Component {
 
   constructor(props) {
     super(props)
     this.state = {
+      visible: false,
+      animation: this.randomAnimation(),
       fields: {
         lastName: '',
         email: '',
@@ -214,9 +218,24 @@ class RegistraionBox extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.setState({
+      visible: this.props.visible
+    })
+  }
+
   handleSubmit(e) {
     e.preventDefault()
     console.log(require('util').inspect(this.state, { showHidden: false, depth: 2, colorize: true }));
+    this.setState({
+      visible: !this.state.visible,
+      animation: this.randomAnimation()
+    })
+    setTimeout(() => {
+     this.setState({
+       visible: true
+     }) 
+    }, 3000);
   }
 
   onCheckboxCheck(e, {checked}) {
@@ -239,87 +258,97 @@ class RegistraionBox extends React.Component {
     })
   }
 
+  randomAnimation() {
+    return animations[Math.floor(Math.random() * animations.length)];
+  }
+
   render() {
     return (
       <Container>
         <Grid columns="3" centered>
-          <Grid.Column></Grid.Column>
+          <Grid.Column />
           <Grid.Column>
-            <Segment text very padded>
-              <Form
-                ref="form"
-                onSubmit={(e)=>{this.handleSubmit(e)}}
-              >
-                <Form.Input
-                  fluid
-                  type="text"
-                  name="lastName"
-                  onChange={(e)=>{this.onInputChange(e)}}
-                  placeholder="Last name"
-                />
-                <Form.Input 
-                  fluid
-                  type="text"
-                  name="email"
-                  onChange={(e)=>{this.onInputChange(e)}}
-                  placeholder="Email Address"
-                />
-                <Form.Input 
-                  fluid
-                  type="text"
-                  name="mobile"
-                  onChange={(e)=>{this.onInputChange(e)}}
-                  placeholder = "Mobile Number"
-                />
-                <Form.Input 
-                  type="text"
-                  name="hotline"
-                  onChange={(e)=>{this.onInputChange(e)}}
-                  placeholder="Hotline Number"
-                />
-                <Form.Input 
-                  type="text"
-                  name="ivrCode"
-                  onChange={(e)=>{this.onInputChange(e)}}
-                  placeholder="ID Number"
-                />
-                <Form.Dropdown
-                  placeholder='Select Country'
-                  fluid
-                  search
-                  name="county"
-                  onChange={this.onInputChange.bind(this)}
-                  selection
-                  options={countyOptions}
-                />
-                <Checkbox
-                  name="tos"
-                  label='I agree to the Terms and Conditions'
-                  onChange = {
-                    this.onCheckboxCheck.bind(this)
-                  }
-                />
-                <br></br>
-                <Button
-                  fluid
-                  basic
-                  color="blue"
-                  disabled={
-                    !this.state.fields.lastName
-                    || !this.state.fields.email
-                    || !this.state.fields.mobile
-                    || !this.state.fields.hotline
-                    || !this.state.fields.county
-                    || !this.state.fields.ivrCode
-                    || !this.state.fields.tos 
-                  }
-                  type="submit" >
-                  FINISH
-                </Button>
-            </Form>
-            </Segment>
+            <Transition visible={this.state.visible} animation={this.state.animation} duration={750}>
+              <Segment text very padded>
+                <Form
+                  ref="form"
+                  onSubmit={(e)=>{this.handleSubmit(e)}}
+                >
+                  <Form.Input
+                    fluid
+                    type="text"
+                    name="lastName"
+                    onChange={(e)=>{this.onInputChange(e)}}
+                    placeholder="Last name"
+                  />
+                  <Form.Input 
+                    fluid
+                    type="text"
+                    name="email"
+                    onChange={(e)=>{this.onInputChange(e)}}
+                    placeholder="Email Address"
+                  />
+                  <Form.Input 
+                    fluid
+                    type="text"
+                    name="mobile"
+                    onChange={(e)=>{this.onInputChange(e)}}
+                    placeholder = "Mobile Number"
+                  />
+                  <Form.Input 
+                    type="text"
+                    name="hotline"
+                    onChange={(e)=>{this.onInputChange(e)}}
+                    placeholder="Hotline Number"
+                  />
+                  <Form.Input 
+                    type="text"
+                    name="ivrCode"
+                    onChange={(e)=>{this.onInputChange(e)}}
+                    placeholder="ID Number"
+                  />
+                  <Form.Dropdown
+                    placeholder='Select Country'
+                    fluid
+                    search
+                    name="county"
+                    onChange={this.onInputChange.bind(this)}
+                    selection
+                    options={countyOptions}
+                  />
+                  <Checkbox
+                    name="tos"
+                    label='I agree to the Terms and Conditions'
+                    onChange = {
+                      this.onCheckboxCheck.bind(this)
+                    }
+                  />
+                  <br></br>
+                  <br></br>
+                  <Button
+                    positive
+                    fluid
+                    primary
+                    icon
+                    color="blue"
+                    disabled={
+                      !this.state.fields.lastName
+                      || !this.state.fields.email
+                      || !this.state.fields.mobile
+                      || !this.state.fields.hotline
+                      || !this.state.fields.county
+                      || !this.state.fields.ivrCode
+                      || !this.state.fields.tos 
+                    }
+                    type="submit" >
+                    <Icon name="check circle" />
+                    FINISH
+                  </Button>
+                </Form>
+              </Segment>
+            </Transition>
           </Grid.Column>
-          <Grid.Column></Grid.Column>
+          <Grid.Column />
         </Grid>
       </Container>
     )

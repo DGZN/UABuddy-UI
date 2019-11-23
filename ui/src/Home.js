@@ -16,7 +16,6 @@ constructor(props) {
 
 
   selectUAType(type) {
-    console.log(`SELECTED ${type}`)
     this.setState({
         selectedUAType: type,
         displayUATypes: false
@@ -37,7 +36,7 @@ constructor(props) {
                 </Grid.Column>
             </Grid>
       ) : (
-        <RegistrationBox selectedUA={this.state.selectUAType} />
+        <RegistrationBox selectedUA={this.state.selectUAType} visible={true} />
       )
   }
   
@@ -47,11 +46,10 @@ constructor(props) {
             <Header size="large" as='h3' dividing>
                 <Icon name='home' size='large' />
             </Header>
-            <br></br>
-            <Container>
-                <h1 className="title">WHAT TYPE OF UA SERVICE DO YOU USE ? </h1>
-                    Select the type of UA testing service that your program uses such as color codes or personal ID numbers.
-            </Container>
+            <Segment className = "ui center aligned transparent segment" >
+              <h1 className="title">WHAT TYPE OF UA SERVICE DO YOU USE ? </h1>
+                  Select the type of UA testing service that your program uses such as color codes or personal ID numbers.
+            </Segment>
             {this.displayUATypes()}
         </Container>
     );
